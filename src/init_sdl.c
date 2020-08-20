@@ -6,5 +6,14 @@ void init_sdl() {
         SDL_Quit();
         exit(0);
     }
-    printf("Successfuly init sdl\n");
+    SDL_Window *win = SDL_CreateWindow("FUCKING GAMMEE",
+                                       SDL_WINDOWPOS_CENTERED,
+                                       SDL_WINDOWPOS_CENTERED,
+                                       1280, 1080, 0);
+    if(!win)
+        printf("Error creating window: %s \n", SDL_GetError());
+    SDL_Renderer *rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_PRESENTVSYNC);
+    if (!rend)
+        printf("Error creating renderer: %s \n", SDL_GetError());
+    event(win, rend);
 }

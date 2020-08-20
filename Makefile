@@ -14,8 +14,8 @@ HDRS := inc/header.h \
 # add source files here
 SRCS := src/main.c \
 		src/init_sdl.c \
+		src/event.c \
 		#src/render_img.c \
-		#src/event.c \
 		#src/get_app.c \
 		#src/game_hero.c \
 

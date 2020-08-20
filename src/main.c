@@ -2,5 +2,4 @@
 
 int main() {
     init_sdl();
-    printf("hello");
 }
