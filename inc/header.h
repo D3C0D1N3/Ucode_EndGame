@@ -11,5 +11,6 @@
 #include <unistd.h>
 
 
+
 //декларация функций
 void init_sdl();
