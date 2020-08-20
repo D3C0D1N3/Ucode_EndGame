@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 
 //декларация функций
 void init_sdl();
-
