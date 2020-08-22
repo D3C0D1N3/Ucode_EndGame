@@ -15,6 +15,7 @@ HDRS := inc/header.h \
 SRCS := src/main.c \
 		src/init_sdl.c \
 		src/event.c \
+		src/menu.c \
 		#src/render_img.c \
 		#src/get_app.c \
 		#src/game_hero.c \
