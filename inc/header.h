@@ -17,8 +17,51 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
+
+typedef struct // Герой
+{
+    float x, y;
+    float dx, dy;
+    short life;
+    char *name;
+    int onLedge;
+
+    int animFrame, facingLeft/*, slowingDown*/;
+} Man;
+
+typedef struct // Перешкоди
+{
+    int x, y;
+} Star;
+
+typedef struct { // Платформи
+    int x, y, w, h;
+}   Ledge;
+
+typedef struct  // Безпосередньо структура гри
+{
+    Man man;
+
+    Star stars[100];
+
+    Ledge ledges[100];
+
+    SDL_Texture *star;
+    SDL_Texture *manFrames[2];
+    SDL_Texture *brick;
+    SDL_Texture *back;
+
+    SDL_Renderer *renderer;
+
+    int time;
+} GameState;
 
 //декларация функций
 void init_sdl();
-int event(SDL_Window *win, SDL_Renderer *rend);
-int menu(SDL_Window *win, SDL_Renderer *rend);
+void collision(GameState *game);
+int menu(SDL_Window *window, SDL_Renderer *renderer);
+void load_game(GameState *game);
+void process(GameState *game);
+bool processEvents(SDL_Window *window, GameState *game);
+void do_render(SDL_Renderer *renderer, GameState *game);

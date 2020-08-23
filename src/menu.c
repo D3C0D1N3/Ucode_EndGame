@@ -2,7 +2,9 @@
 
 #undef main
 
-int menu(SDL_Window *win, SDL_Renderer *rend) {
+int menu(SDL_Window *window, SDL_Renderer *renderer) {
+    SDL_RenderClear(renderer);
+
     bool quit = false; 
     SDL_Event input;
     SDL_Texture* texture;
@@ -24,9 +26,9 @@ int menu(SDL_Window *win, SDL_Renderer *rend) {
     button_quit = IMG_Load("/Users/ymrozek/Desktop/EndGameCollab/assets/menu/image-3.png");
 
     //Filling texture with the image using a surface
-    texture = SDL_CreateTextureFromSurface(rend, temp);
-    texture_start = SDL_CreateTextureFromSurface(rend, button_start);
-    texture_quit = SDL_CreateTextureFromSurface(rend, button_quit);
+    texture = SDL_CreateTextureFromSurface(renderer, temp);
+    texture_start = SDL_CreateTextureFromSurface(renderer, button_start);
+    texture_quit = SDL_CreateTextureFromSurface(renderer, button_quit);
 
     //Deleting the temporary surface
     SDL_FreeSurface(temp);
@@ -59,12 +61,10 @@ int menu(SDL_Window *win, SDL_Renderer *rend) {
         }
         
         if(input.type == SDL_MOUSEBUTTONDOWN) {
-             if(input.button.button == SDL_BUTTON_LEFT 
+            if(input.button.button == SDL_BUTTON_LEFT 
                 && input.button.x >= 480 && input.button.x <= 780
                 && input.button.y >= 200 && input.button.y <= 300) {
-                int flag = event(win, rend);
-                if (flag == 2)
-                    menu(win, rend);
+                return 0;
             }
         }
         if(input.type == SDL_MOUSEBUTTONDOWN) {
@@ -81,23 +81,22 @@ int menu(SDL_Window *win, SDL_Renderer *rend) {
                 break;
             }
         }
+    
         
-        SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-        SDL_RenderClear(rend);
+        SDL_RenderClear(renderer);
 
         //Copying the texture on to the window using renderer and rectangle
-        SDL_RenderCopy(rend, texture, NULL, &rect);
-        SDL_RenderCopy(rend, texture_start, NULL, &rect2);
-        SDL_RenderCopy(rend, texture_quit, NULL, &rect3);
+        SDL_RenderCopy(renderer, texture, NULL, &rect);
+        SDL_RenderCopy(renderer, texture_start, NULL, &rect2);
+        SDL_RenderCopy(renderer, texture_quit, NULL, &rect3);
 
-        SDL_RenderPresent(rend);
+        SDL_RenderPresent(renderer);
     }
-
     //Deleting the texture
     SDL_DestroyTexture(texture);
 
-    SDL_DestroyRenderer(rend);
-    SDL_DestroyWindow(win);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 
     //For quitting IMG systems
     IMG_Quit();

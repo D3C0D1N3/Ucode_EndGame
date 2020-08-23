@@ -4,7 +4,7 @@
 CC := clang
 
 # set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm
+CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c11 -Wall -lSDL2_image -lm -Wextra -Wpedantic
 
 # add header files here
 HDRS := inc/header.h \
@@ -13,9 +13,13 @@ HDRS := inc/header.h \
 
 # add source files here
 SRCS := src/main.c \
-		src/init_sdl.c \
-		src/event.c \
+		src/process_event.c \
+		src/process.c \
+		src/do_render.c \
+		src/load_game.c \
+		src/collision.c \
 		src/menu.c \
+
 		#src/render_img.c \
 		#src/get_app.c \
 		#src/game_hero.c \
