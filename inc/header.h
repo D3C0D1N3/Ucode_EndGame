@@ -1,67 +1,82 @@
 #pragma once
 
-//наши фреймворки (Тут будут закомичены хедеры и левые фреймворки)
-//Все что в include/SDL... для линукса на дому.
-#include "../macFrameworks/SDL2.framework/Headers/SDL.h"
-#include "../macFrameworks/SDL2_image.framework/Headers/SDL_image.h"
-//#include <SDL2/SDL.h>
-//#include <SDL2/SDL_image.h>
-//#include <SDL2/SDL2_gfxPrimitives.h>
+#define GRAVITY 0.362f
+#define STATUS_STATE_LIVES 0
+#define STATUS_STATE_GAME 1
+#define STATUS_STATE_GAMEOVER 2
+#define STATUS_STATE_WIN 3
 
-//Подключение хэдеров
+#define NUM_STARS 100
+#define NUM_LEDGES 120
 
+#define WINDOW_H 1280  // 1280 - 640
+#define WINDOW_W 720 // 720 - 480
+
+//наши фреймворки
+#include "SDL2/SDL.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+#include "SDL_mixer.h"
 
 //системные библиотеки
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include <string.h>
 #include <time.h>
 
-typedef struct // Герой
+//декларация функций
+
+typedef struct // Персонаж / MAn
 {
     float x, y;
     float dx, dy;
-    short life;
+    short lives;
     char *name;
-    int onLedge;
-
-    int animFrame, facingLeft/*, slowingDown*/;
+    int onLedge, isDead;
+    int animFrame, facingLeft, slowingDown;
 } Man;
 
-typedef struct // Перешкоди
+typedef struct // Перешкоди / Star
 {
-    int x, y;
+    int x, y, baseX, baseY, mode;
+    float phase;
 } Star;
 
-typedef struct { // Платформи
+typedef struct { // Платформи / Ledge
     int x, y, w, h;
 }   Ledge;
 
-typedef struct  // Безпосередньо структура гри
+typedef struct  // Безпосередньо структура гри / GameState
 {
+    float scrollX;
     Man man;
-
-    Star stars[100];
-
-    Ledge ledges[100];
-
+    Star stars[NUM_STARS];
+    Ledge ledges[NUM_LEDGES];
+    //картинки
     SDL_Texture *star;
     SDL_Texture *manFrames[2];
     SDL_Texture *brick;
-    SDL_Texture *back;
+    SDL_Texture *fire;
+    SDL_Texture *level_back;
+    //шрифт
+    int time, deathCountdown;
+    int statusState;
+    //звук
+    int musicChannel;
+    Mix_Music *bgMusic;
+    Mix_Chunk *jumpSound, *landSound, *dieSound;
 
     SDL_Renderer *renderer;
-
-    int time;
 } GameState;
 
-//декларация функций
 void init_sdl();
-void collision(GameState *game);
-int menu(SDL_Window *window, SDL_Renderer *renderer);
+void print_error(SDL_Surface *surface, char *s);
+void init_game_over(GameState *game);
+void init_stars(GameState *game);
 void load_game(GameState *game);
-void process(GameState *game);
-bool processEvents(SDL_Window *window, GameState *game);
+void process(SDL_Window *window, GameState *game);
+void collision_detect(GameState *game);
+int process_events(SDL_Window *window, GameState *game);
 void do_render(SDL_Renderer *renderer, GameState *game);
+int menu(SDL_Window *window, SDL_Renderer *renderer);
