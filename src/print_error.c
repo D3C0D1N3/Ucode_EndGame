@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 void print_error(SDL_Surface *surface, char *s) {
     if (surface == NULL) {
@@ -6,4 +6,5 @@ void print_error(SDL_Surface *surface, char *s) {
         SDL_Quit();
         exit(1);
     }
+    system("leaks -q endgame");
 }

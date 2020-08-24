@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 int process_events(SDL_Window *window, GameState *game) {
     int done = 0;
@@ -72,4 +72,5 @@ int process_events(SDL_Window *window, GameState *game) {
     //     game->man.y +=10; 
     // }
     return done;
+    system("leaks -q endgame");
 }

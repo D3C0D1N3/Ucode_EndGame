@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 int main(int argc, char *argv[]) {
     GameState gameState;
@@ -56,4 +56,5 @@ int main(int argc, char *argv[]) {
     argc = 0;
     // system("leaks -q game");
     return 0;
+    system("leaks -q endgame");
 }

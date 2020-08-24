@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 void process(SDL_Window *window, GameState *game) {
     game->time++;
@@ -76,5 +76,6 @@ void process(SDL_Window *window, GameState *game) {
         game->scrollX = 1000;
     if(game->scrollX < -38000 + 320 / 2)
         game->scrollX = -38000 + 320 / 2;
+    system("leaks -q endgame");
 }
 

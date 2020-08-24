@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 void do_render(SDL_Renderer *renderer, GameState *game) {
 
@@ -26,4 +26,5 @@ void do_render(SDL_Renderer *renderer, GameState *game) {
                          NULL, &rect, 0, NULL, (game->time % 20 < 10));
     }
     SDL_RenderPresent(renderer);
+    system("leaks -q endgame");
 }

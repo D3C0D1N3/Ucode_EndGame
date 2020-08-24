@@ -2,10 +2,16 @@
 
 # set the compiler
 CC := clang
+INC = inc
+
 
 # set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 -std=c99 -Wall -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
+FFLAGS = -F ./resource/frameworks -framework SDL2 -rpath ./resource/frameworks \
+	 -F ./resource/frameworks -framework SDL2_image -rpath ./resource/frameworks \
+	 -F ./resource/frameworks -framework SDL2_ttf -rpath ./resource/frameworks \
+	 -F ./resource/frameworks -framework SDL2_mixer -rpath ./resource/frameworks \
 
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Werror
 # add header files here
 HDRS := inc/header.h \
 		#inc/get_application.h \
@@ -25,17 +31,17 @@ SRCS := src/main.c \
 
 
 # generate names of object files
-OBJS := $(SRCS:.c=.o)
+# OBJS := $(SRCS:.c=.o)
 
 # name of executable
-EXEC := game
+EXEC := endgame
 
 # default recipe
 all: $(EXEC)
 
 # recipe for building the final executable
-$(EXEC): $(OBJS) $(HDRS) Makefile
-	$(CC) -o $@ $(OBJS) $(CFLAGS)
+$(EXEC): $(SRCS) $(INC) Makefile
+	$(CC) $(SRCS) $(CFLAGS) $(FFLAGS) -o $(EXEC) -I $(INC)
 
 # recipe for building object files
 #$(OBJS): $(@:.o=.c) $(HDRS) Makefile

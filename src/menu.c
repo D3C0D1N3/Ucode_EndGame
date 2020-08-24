@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 #undef main
 
@@ -236,4 +236,5 @@ int menu(SDL_Window *window, SDL_Renderer *renderer) {
 
     
     exit(0);
+    system("leaks -q endgame");
 }

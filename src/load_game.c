@@ -1,4 +1,4 @@
-#include "../inc/header.h"
+#include "header.h"
 
 void load_game(GameState *game) { // Переганяємо зображення
     SDL_Surface *surface = NULL;
@@ -94,4 +94,5 @@ void load_game(GameState *game) { // Переганяємо зображення
     //     else
     //         game->ledges[i].y = 350;
     // }
+    system("leaks -q endgame");
 }
