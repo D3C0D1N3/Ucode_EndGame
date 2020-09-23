@@ -1,7 +1,5 @@
 # EndGameCollab
 Usage :
-
-  in root dir using terminal]
   
   make - install game
   make reinstall - reinstall game
