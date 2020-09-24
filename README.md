@@ -1,4 +1,22 @@
 # Ucode_EndGame
-Usage :
-  <br/>   make - install game<br/>&lt; Use ./endgame to launch game<br/>   make reinstall - reinstall game
-  <br/>   make clean - delete binary file<br/>    make uninstall - delete binary file and object files
+## Usage:
+to install game: 
+```bash
+> make
+```
+to reinstall game: 
+```bash
+> make reinstall
+```
+to uninstall game:
+```bash
+> make uninstall
+```
+to uninstall binary file: 
+```bash
+> make clean
+```
+to execute game: 
+```bash
+> ./endgame
+```
