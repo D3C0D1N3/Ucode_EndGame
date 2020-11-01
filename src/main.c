@@ -1,11 +1,15 @@
-#include "header.h"
+#include "../inc/header.h"
 
 int main(int argc, char *argv[]) {
-    GameState gameState;
+    LoadMenu *load = (LoadMenu*)malloc(sizeof(LoadMenu));
+    GameState *game = (GameState*)malloc(sizeof(GameState));
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
+    SDL_Surface *cursor_surf;
+    SDL_Cursor *cursor = NULL;
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    TTF_Init();
 
     srandom((int)time(NULL));
 
@@ -16,45 +20,51 @@ int main(int argc, char *argv[]) {
                               WINDOW_W,
                               0
                               );
+    cursor_surf = IMG_Load("resource/images/menu/cursor.png");
+    cursor = SDL_CreateColorCursor(cursor_surf, 0, 0);
+    SDL_SetCursor(cursor);
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED 
                                   | SDL_RENDERER_PRESENTVSYNC);
-    gameState.renderer = renderer;
+    game->renderer = renderer;
 
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096); //initialize sound
 
-    menu(window, renderer);
 
-    load_game(&gameState);
+    
+//    menu(window, renderer, load, game);
+    game->status = MENU_STATE;
 
     int done = 0;
 
     while(!done) {
-        done = process_events(window, &gameState); // процес гри
-
-        process(window, &gameState);
-        collision_detect(&gameState);
-
-        do_render(renderer, &gameState);
+        switch (game->status) {
+            case MENU_STATE:
+                load_menu(load, game);
+                game->status = menu(window, load, game);
+                break;
+            case GAME_STATE:
+                load_game(game);
+                game->status = main_process(window, game);
+                break;
+            case GAMEOVER_STATE:
+                game->status = init_game_over(game, window, load);
+                break;
+            case EXIT_STATE:
+                exit(0);
+                break;
+        }
     }
-    // звільняємо память
-    SDL_DestroyTexture(gameState.star);
-    SDL_DestroyTexture(gameState.manFrames[0]);
-    SDL_DestroyTexture(gameState.manFrames[1]);
-    SDL_DestroyTexture(gameState.brick);
 
-    Mix_FreeMusic(gameState.bgMusic);
-    Mix_FreeChunk(gameState.dieSound);
-    Mix_FreeChunk(gameState.jumpSound);
-    Mix_FreeChunk(gameState.landSound);
-
-    SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     Mix_CloseAudio();
+    free(load);
+    free(game);
     Mix_Quit();
+    TTF_Quit();
+    free(cursor);
     SDL_Quit();
     argc = 0;
-    // system("leaks -q game");
-    return 0;
-    system("leaks -q endgame");
+    exit(0);
 }

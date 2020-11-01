@@ -14,12 +14,11 @@ FFLAGS = -F ./resource/frameworks -framework SDL2 -rpath ./resource/frameworks \
 CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Werror
 # add header files here
 HDRS := inc/header.h \
-		#inc/get_application.h \
-		#inc/hero.h \
 
 # add source files here
 SRCS := src/main.c \
 		src/menu.c \
+		src/main_process.c \
 		src/print_error.c \
 		src/init_game_over.c \
 		src/init_stars.c \
@@ -28,6 +27,17 @@ SRCS := src/main.c \
 		src/collision_detect.c \
 		src/process_events.c \
 		src/do_render.c \
+		src/load_menu.c \
+		src/destroy_game.c \
+		src/mx_itoa.c \
+		src/draw_text.c \
+		src/blocks_animation.c \
+		src/portals_animation.c \
+		src/change_fon.c \
+		src/mx_file_to_str.c \
+		src/mx_strnew.c \
+		src/destroy_menu.c \
+		#src/sprite_sheet.c \src/leader.c \
 
 
 # generate names of object files
@@ -41,7 +51,8 @@ all: $(EXEC)
 
 # recipe for building the final executable
 $(EXEC): $(SRCS) $(INC) Makefile
-	$(CC) $(SRCS) $(CFLAGS) $(FFLAGS) -o $(EXEC) -I $(INC)
+	@$(CC) $(SRCS) $(CFLAGS) $(FFLAGS) -o $(EXEC) -I $(INC)
+	@printf "\r\33[2K $(NAME)\033[33;1m\tcompile\n"
 
 # recipe for building object files
 #$(OBJS): $(@:.o=.c) $(HDRS) Makefile
@@ -49,6 +60,14 @@ $(EXEC): $(SRCS) $(INC) Makefile
 
 # recipe to clean the workspace
 clean:
-	rm -f $(EXEC) $(OBJS)
+	rm -f $(OBJS)
+	@printf "Object files - \t\033[31;1mdeleted\033[0m\n"
+
+
+uninstall: clean
+	rm -f $(EXEC)
+	@printf "$(NAME)\t\033[31;1muninstalled\n"
+
+reinstall: uninstall all
 
 .PHONY: all clean

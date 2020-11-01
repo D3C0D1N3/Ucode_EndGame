@@ -5,10 +5,14 @@ int collide2d(float x1, float y1, float x2, float y2, float wt1, float ht1, floa
 }
 
 void collision_detect(GameState *game) {
+
     for(int i = 0; i < NUM_STARS; i++) { // перевірка зіткнення з зірками
         if(collide2d(game->man.x, game->man.y, game->stars[i].x, game->stars[i].y, 48, 48, 32, 32)) {
-            if(!game->man.isDead)
+            if(!game->man.isDead) {
                 game->man.isDead = 1;
+                Mix_PlayChannel(1, game->dieSound, 0);
+
+            }
             break;
         }
     }
@@ -16,6 +20,7 @@ void collision_detect(GameState *game) {
     if(game->man.y > WINDOW_W) //перевірка падіння
         if(!game->man.isDead) {
             game->man.isDead = 1;
+            Mix_PlayChannel(1, game->dieSound, 0);
         }
   
     for(int i = 0; i < NUM_LEDGES; i++) {// перевірка зіткнення з будь-яким блоком
@@ -37,8 +42,17 @@ void collision_detect(GameState *game) {
                 my = by-mh;
                 game->man.dy = 0;
                 if(!game->man.onLedge) {
-                    Mix_PlayChannel(-1, game->landSound, 0);
                     game->man.onLedge = 1;
+                    Mix_PlayChannel(3, game->landSound, 0);
+                    if (game->man.x < 200 && game->man.x > game->man.max_x) {
+                        if (game->man.max_x > 200)
+                            game->man.count++;
+                        game->man.max_x = game->man.x;
+                    }
+                    if (game->man.x > game->man.max_x + 100) {
+                        game->man.count++;
+                        game->man.max_x = game->man.x;                        
+                    }
                 }
             }
         }
@@ -56,5 +70,4 @@ void collision_detect(GameState *game) {
             }
         }
     }
-    system("leaks -q endgame");
 }
