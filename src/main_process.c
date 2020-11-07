@@ -15,18 +15,9 @@ e_game main_process (SDL_Window *window, GameState *game) {
         done = process(game);
 
         done = game->copydone;
-        if (done == 1) {
-            destroy_game(game);
-            return EXIT_STATE;
-        }
-        if (done == 2) {
-            destroy_game(game);
-            return MENU_STATE;
-        }
-        if (done == 3) {
-            destroy_game(game);
-            return GAMEOVER_STATE;
-        }
+        destroy_game(game);
+        int a[] = [EXIT_STATE, MENU_STATE, GAMEOVER_STATE];
+        return a[done - 1];
     }
     return GAME_STATE;
 }
